@@ -1,0 +1,8 @@
+services:
+  void-container:
+    image: ghcr.io/void-linux/void-glibc-full:latest
+    container_name: void-glibc
+    stdin_open: true      # Keep stdin open (useful for interactive mode)
+    tty: true             # Allocate a pseudo-TTY
+    command: /bin/sh    # Default command
+    restart: unless-stopped
