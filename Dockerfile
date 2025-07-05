@@ -11,8 +11,10 @@ RUN make install
 RUN xbps-install skopeo -y
 #-------------------------------------------
 WORKDIR /
-COPY / /sysroot
+RUN mkdir -p /sysroot/ostree
 COPY prepare-root.conf /etc/ostree/prepare-root.conf
 COPY 00-pingipie.toml /usr/lib/bootc/install/
 RUN ln -sf sysroot/ostree /ostree
 LABEL ostree.bootable=true
+WORKDIR /sysroot/ostree
+RUN ostree init --repo .
