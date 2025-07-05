@@ -8,8 +8,11 @@ WORKDIR /bootc
 ENV PKG_CONFIG_PATH="/usr/lib/pkgconfig:$PATH"
 RUN make
 RUN make install
-RUN xbps-install skopeo
+RUN xbps-install skopeo -y
+#-------------------------------------------
+WORKDIR /
+COPY / /sysroot
 COPY prepare-root.conf /etc/ostree/prepare-root.conf
 COPY 00-pingipie.toml /usr/lib/bootc/install/
+RUN ln -sf sysroot/ostree /ostree
 LABEL ostree.bootable=true
-CMD ["bash", "-i"]

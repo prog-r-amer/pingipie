@@ -5,11 +5,22 @@ setup-platforms:
 build: setup-platforms
 	docker buildx build . -t miaumiau --builder builder --load --platform=linux/arm64
 run:
-	docker run -it --platform=linux/arm64 miaumiau
+	docker run -it --platform=linux/arm64 miaumiau:latest /bin/bootc container lint
+build-image:
+	sudo podman run \
+	--rm \
+	-it \
+	--privileged \
+	--pull=newer \
+	--security-opt label=type:unconfined_t \
+	-v /var/lib/containers/storage:/var/lib/containers/storage \
+	quay.io/centos-bootc/bootc-image-builder:latest \
+	--type iso \
+	ghcr.io/prog-r-amer/pingipie:main
 upstream:
 	docker run -it --privileged \
-		--device=/dev/sdd:/dev/sdd \
-		ghcr.io/ublue-os/ucore-minimal:latest /bin/bootc install to-disk --filesystem=ext4 /dev/sdd --source-imgref=registry:ghcr.io/ublue-os/ucore-minimal:latest --wipe
+		--platform=linux/arm64 --device=/dev/sdd:/dev/sdd \
+		ghcr.io/prog-r-amer/pingipie:main /bin/bootc install to-disk --filesystem=ext4 /dev/sdd --source-imgref=registry:ghcr.io/prog-r-amer/pingipie:main --wipe
 yolo:
 	docker run -it --pid=host --platform=linux/arm64 --privileged \
 		--device=/dev/sdd:/dev/sdd \
