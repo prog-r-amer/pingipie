@@ -17,6 +17,16 @@ build-image:
 	quay.io/centos-bootc/bootc-image-builder:latest \
 	--type iso \
 	ghcr.io/prog-r-amer/pingipie:main
+debug:
+	sudo podman run \
+	--rm \
+	-it \
+	--privileged \
+	--pull=newer \
+	--security-opt label=type:unconfined_t \
+	-v /var/lib/containers/storage:/var/lib/containers/storage \
+	quay.io/centos-bootc/bootc-image-builder:latest \
+	manifest ghcr.io/prog-r-amer/pingipie:main
 upstream:
 	docker run -it --privileged \
 		--platform=linux/arm64 --device=/dev/sdd:/dev/sdd \
