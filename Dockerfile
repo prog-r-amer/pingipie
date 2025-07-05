@@ -17,6 +17,6 @@ COPY 00-pingipie.toml /usr/lib/bootc/install/
 RUN ln -sf sysroot/ostree /ostree
 LABEL ostree.bootable=true
 LABEL containers.bootc 1
-WORKDIR /sysroot/ostree
 RUN xbps-install runc -y
+RUN cd /sysroot/ostree
 RUN ostree init --repo .
